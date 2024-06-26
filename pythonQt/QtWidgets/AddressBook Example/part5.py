@@ -2,7 +2,7 @@ import sys
 
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtWidgets import QWidget, QLabel, QTextEdit, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout, QGridLayout, \
-    QMessageBox, QApplication
+    QMessageBox, QApplication, QDialog
 
 
 class SortedDict(dict):
@@ -54,6 +54,8 @@ class AddressBook(QWidget):
         self._edit_button.setEnabled(False)
         self._remove_button = QPushButton("&Remove")
         self._remove_button.setEnabled(False)
+        self._find_button = QPushButton("&find")
+        self._find_button.setEnabled(False)
         self._submit_button = QPushButton("&Submit")
         self._submit_button.hide()
         self._cancel_button = QPushButton("&Cancel")
@@ -64,10 +66,13 @@ class AddressBook(QWidget):
         self._previous_button= QPushButton("&Previous")
         self._previous_button.setEnabled(False)
 
+        self.dialog= FindDialog()
+
         self._add_button.clicked.connect(self.add_contact)
         self._submit_button.clicked.connect(self.submit_contact)
         self._edit_button.clicked.connect(self.edit_contact)
         self._remove_button.clicked.connect(self.remove_contact)
+        self._find_button.clicked.connect(self.find_contact)
         self._cancel_button.clicked.connect(self.cancel)
         self._next_button.clicked.connect(self.next)
         self._previous_button.clicked.connect(self.previous)
@@ -76,6 +81,7 @@ class AddressBook(QWidget):
         button_layout_1.addWidget(self._add_button)
         button_layout_1.addWidget(self._edit_button)
         button_layout_1.addWidget(self._remove_button)
+        button_layout_1.addWidget(self._find_button)
         button_layout_1.addWidget(self._submit_button)
         button_layout_1.addWidget(self._cancel_button)
         button_layout_1.addStretch()
@@ -90,7 +96,7 @@ class AddressBook(QWidget):
         main_layout.addWidget(address_label, 1, 0, Qt.AlignTop)
         main_layout.addWidget(self._address_text, 1, 1)
         main_layout.addLayout(button_layout_1, 1, 2)
-        main_layout.addLayout(button_layout_2, 3, 1)
+        main_layout.addLayout(button_layout_2, 2, 1)
 
         self.setLayout(main_layout)
         self.setWindowTitle("Simple Address Book")
@@ -126,17 +132,17 @@ class AddressBook(QWidget):
                 self.contacts[name]= address
                 QMessageBox.information(self, "Add Successful", f'"{name}" has been added to your address book.')
             else:
-                QMessageBox.information(self, "Add unsucessful", f'Sorry, "{name}" is already in your address book.')
+                QMessageBox.information(self, "Add Unsucessful", f'Sorry, "{name}" is already in your address book.')
                 return
         elif self._current_mode== self.EditingMode:
-            if name != name:
+            if self._old_name != name:
                 if name not in self.contacts:
                     QMessageBox.information(self, "Edit Successful", f'"{self.oldName}" has been edited in your address book.')
 
                     del self.contacts[self._old_name]
                     self.contacts[name]= address
                 else:
-                    QMessageBox.information(self, "Edit Successful", f'Sorry, "{name}" has been edited in your address book.')
+                    QMessageBox.information(self, "Edit Unsuccessful", f'Sorry, "{name}" is already in your address book.')
                     return
             elif self._old_address!= address:
                 QMessageBox.information(self, "Edit Successful",
@@ -177,8 +183,7 @@ class AddressBook(QWidget):
                 if this_name== name:
                     next_name, next_address= it.next()
                     break
-        except StopIteration:
-            next_name, next_address= iter(self.contacts).next()
+        except StopIteration: next_name, next_address= iter(self.contacts).next()
 
         self._name_line.setText(next_name)
         self._address_text.setText(next_address)
@@ -205,6 +210,19 @@ class AddressBook(QWidget):
 
         self._name_line.setText(prev_name)
         self._address_text.setText(prev_address)
+
+    def find_contact(self):
+        self.dialog.show()
+        if self.dialog.exec()== QDialog.Accepted:
+            contact_name= self.dialog.get_find_text()
+            if contact_name in self.contacts:
+                self._name_line.setText(contact_name)
+                self._address_text.setText(self.contacts[contact_name])
+            else:
+                QMessageBox.information(self, "CONTACT NOT FOUND", f'SORRY, "{contact_name}" is not in your address book.')
+                return
+
+        self.update_interface(self.NavigationMode)
 
     def update_interface(self, mode):
         self._current_mode= mode
@@ -233,13 +251,47 @@ class AddressBook(QWidget):
             self._add_button.setEnabled(True)
 
             number = len(self.contacts)
-            self._edit_button.setEnabled(number > 1)
+            self._edit_button.setEnabled(number >= 1)
             self._remove_button.setEnabled(number >= 1)
+            self._find_button.setEnabled((number> 2))
             self._next_button.setEnabled(number > 1)
             self._previous_button.setEnabled(number > 1)
 
             self._submit_button.hide()
             self._cancel_button.hide()
+
+class FindDialog(QDialog):
+    def __init__(self, parent= None):
+        super().__init__(parent)
+
+        find_label= QLabel("ENTER THE NAME OF A CONTACT: ")
+
+        self._line_edit= QLineEdit()
+        self._find_button= QPushButton("&Find")
+        self._find_text= ''
+
+        layout= QHBoxLayout()
+        layout.addWidget(find_label)
+        layout.addWidget(self._line_edit)
+        layout.addWidget(self._find_button)
+
+        self.setLayout(layout)
+        self.setWindowTitle("Find a Contact")
+
+        self._find_button.clicked.connect(self.find_clicked)
+        self._find_button.clicked.connect(self.accept)
+
+    def find_clicked(self):
+        text= self._line_edit.text()
+        if not text:
+            QMessageBox.information(self, "Empty Field", "Please enter a name.")
+            return
+        else:
+            self._find_text= text
+            self._line_edit.clear()
+            self.hide()
+
+    def get_find_text(self): return self._find_text
 
 if __name__== '__main__':
     app= QApplication(sys.argv)

@@ -13,6 +13,7 @@ class SortedDict(dict):
             self._nr_items= len(self._keys)
             self._idx= 0
 
+
         def __iter__(self): return self
 
         def next(self):
