@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1108</width>
+    <height>856</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>30</y>
+     <width>1031</width>
+     <height>771</height>
+    </rect>
+   </property>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>321</width>
+      <height>691</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>GroupBox</string>
+    </property>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>50</y>
+       <width>91</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>GOOGLE</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>180</y>
+       <width>91</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>NAVER</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_3">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>600</y>
+       <width>91</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>DAUM</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_4">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>460</y>
+       <width>91</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>BING</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_5">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>320</y>
+       <width>91</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>ZUM</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWebEngineView" name="webEngineView">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>80</y>
+      <width>431</width>
+      <height>571</height>
+     </rect>
+    </property>
+    <property name="url">
+     <url>
+      <string>about:blank</string>
+     </url>
+    </property>
+   </widget>
+   <widget class="Line" name="line">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>0</y>
+      <width>20</width>
+      <height>741</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Orientation::Vertical</enum>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebEngineView</class>
+   <extends>QWidget</extends>
+   <header location="global">QtWebEngineWidgets/QWebEngineView</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
