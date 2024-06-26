@@ -300,4 +300,3 @@ if __name__== '__main__':
     address_book.show()
 
     sys.exit(app.exec())
-
