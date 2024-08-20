@@ -4,9 +4,8 @@ import sys
 from PySide6.QtCore import QCoreApplication
 from PySide6.QtQml import QQmlComponent, QQmlEngine, qmlAttachedPropertiesObject
 
-from person import Boy, Girl
-from birthdayParty import BirthdayParty
-from happybirthdaysong import HappyBirthdaySong
+from birthdayExamples.person import Boy
+from birthdayExamples.birthdayParty import BirthdayParty
 
 if __name__ == "__main__":
     app = QCoreApplication(sys.argv)
