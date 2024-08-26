@@ -1,3 +1,4 @@
+# A PYTHON APPLICATION THAT DEMONSTRATES HOW TO VISUALIZE A PANDAS DATAFRAME
 import pandas as pd
 
 from PySide6.QtWidgets import QTableView, QApplication
