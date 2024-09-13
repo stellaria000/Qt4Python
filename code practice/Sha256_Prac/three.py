@@ -1,6 +1,7 @@
 from Crypto.Cipher import AES
 import hashlib
 import base64
+from Crypto.Util.Padding import unpad
 
 def decrypt_password(encrypted_str_base64, key_str, iv):
     try:
@@ -8,6 +9,7 @@ def decrypt_password(encrypted_str_base64, key_str, iv):
         encrypted_str = base64.b64decode(encrypted_str_base64)
         
         # SHA-256으로 키 생성
+        # key_str을 바이트로 변환 후 해시 생성
         sha256 = hashlib.sha256()
         sha256.update(key_str.encode('utf-8'))
         cipher_key = sha256.digest()
@@ -20,7 +22,6 @@ def decrypt_password(encrypted_str_base64, key_str, iv):
 
         try:
             # 패딩을 제거해 복호화
-            from Crypto.Util.Padding import unpad
             decrypted_data = unpad(decrypted_data, AES.block_size)
         except ValueError:
             # 패딩 제거 실패 시, 패딩 없는 데이터 반환
@@ -35,13 +36,13 @@ def decrypt_password(encrypted_str_base64, key_str, iv):
 
 def main():
     # Base64로 인코딩된 암호문
-    encrypted_str_base64 = ""
+    encrypted_str_base64 = "34D61070644C5535E0D5D05C947A0B4C0A65748898D1AD6096617FF4DEED4E2B"
     
     # 원래 문자열로 생성된 키
-    key_str = ""
+    key_str = "administrator"
 
     # 암호화에 사용된 IV (16바이트)
-    iv = b''
+    iv = b'HJHJHHWSSWHNMJJW'
 
     # 비밀번호 복호화
     decrypted_str = decrypt_password(encrypted_str_base64, key_str, iv)
