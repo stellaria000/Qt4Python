@@ -16,7 +16,7 @@ def decrypt_password(encrypted_str_base64, key_str, iv):
 
         # AES 암호화 객체 생성
         cipher = AES.new(cipher_key, AES.MODE_CBC, iv)
-
+        
         # 패딩 없이 먼저 복호화 시도
         decrypted_data = cipher.decrypt(encrypted_str)
 
@@ -40,7 +40,8 @@ def main():
     
     # 원래 문자열로 생성된 키
     key_str = "administrator"
-
+    key2Use= key_str[::-1]+ key_str
+    
     # 암호화에 사용된 IV (16바이트)
     iv = b'HJHJHHWSSWHNMJJW'
 
